@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendSmart - Budgeting Tips</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .tip-card {
+            transition: all 0.3s ease;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            padding-top: 30px;
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe,
+        .video-container object,
+        .video-container embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="index.html" class="text-xl font-bold text-blue-600">
+                            <i class="fas fa-wallet mr-2"></i>SpendSmart
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-blue-500 hover:text-blue-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="standalone_chatbot_page.html" class="border-transparent text-gray-500 hover:border-blue-500 hover:text-blue-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Budget Assistant</a>
+                        <a href="standalone_discounts_page.html" class="border-transparent text-gray-500 hover:border-blue-500 hover:text-blue-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Discounts</a>
+                        <a href="#" class="border-blue-500 text-blue-600 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" aria-current="page">Budgeting Tips</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="sm:hidden hidden">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="index.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-blue-500 hover:text-blue-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="standalone_chatbot_page.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-blue-500 hover:text-blue-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Budget Assistant</a>
+                <a href="standalone_discounts_page.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-blue-500 hover:text-blue-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Discounts</a>
+                <a href="#" class="bg-blue-50 border-blue-500 text-blue-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium" aria-current="page">Budgeting Tips</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="bg-blue-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+            <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl mb-4">Smart Budgeting Tips</h1>
+            <p class="text-xl max-w-3xl mx-auto">Discover proven strategies to manage your money effectively, save more, and build financial security.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Tips Section -->
+        <div class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">Essential Budgeting Tips</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tip 1 -->
+                <div class="tip-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                            <i class="fas fa-coins text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">50/30/20 Rule</h3>
+                        <p class="text-gray-600">Allocate 50% of your income to necessities, 30% to wants, and 20% to savings and debt repayment. This simple breakdown helps maintain balance in your spending.</p>
+                    </div>
+                </div>
+                
+                <!-- Tip 2 -->
+                <div class="tip-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                            <i class="fas fa-piggy-bank text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Track Every Expense</h3>
+                        <p class="text-gray-600">Use apps or a simple notebook to record all spending. Seeing where your money goes helps identify unnecessary expenses and opportunities to save.</p>
+                    </div>
+                </div>
+                
+                <!-- Tip 3 -->
+                <div class="tip-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                            <i class="fas fa-calendar-alt text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Schedule Regular Reviews</h3>
+                        <p class="text-gray-600">Set a monthly date to review your budget performance. Adjust categories as needed and celebrate achievements to maintain motivation.</p>
+                    </div>
+                </div>
+                
+                <!-- Tip 4 -->
+                <div class="tip-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                            <i class="fas fa-hand-holding-usd text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Pay Yourself First</h3>
+                        <p class="text-gray-600">Automatically transfer a portion of your income to savings as soon as you get paid. This ensures saving happens before spending.</p>
+                    </div>
+                </div>
+                
+                <!-- Tip 5 -->
+                <div class="tip-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                            <i class="fas fa-shopping-cart text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">24-Hour Rule</h3>
+                        <p class="text-gray-600">Wait 24 hours before making non-essential purchases over a certain amount. This cooling-off period reduces impulse buying.</p>
+                    </div>
+                </div>
+                
+                <!-- Tip 6 -->
+                <div class="tip-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="p-6">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white mb-4">
+                            <i class="fas fa-utensils text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Meal Planning</h3>
+                        <p class="text-gray-600">Plan meals weekly and shop with a list. This reduces food waste and prevents expensive spontaneous dining out or delivery orders.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Videos Section -->
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">Helpful Financial Videos</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Video 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/HQzoZfc3GwQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">How to Budget Like a Pro</h3>
+                        <p class="text-gray-600">Learn practical tips for creating and sticking to a budget that works for your lifestyle.</p>
+                    </div>
+                </div>
+                
+                <!-- Video 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/M5JvwqXUOwI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">5 Money Saving Challenges</h3>
+                        <p class="text-gray-600">Fun and effective challenges to boost your savings and build better financial habits.</p>
+                    </div>
+                </div>
+                
+                <!-- Video 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/pN1YlDQRCiM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Debt Payoff Strategies</h3>
+                        <p class="text-gray-600">Effective methods to eliminate debt faster while still maintaining a balanced budget.</p>
+                    </div>
+                </div>
+                
+                <!-- Video 4 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/8zWL3L4pYEk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Building an Emergency Fund</h3>
+                        <p class="text-gray-600">How to create financial security with a proper emergency fund even on a tight budget.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Advanced Tips Section -->
+        <div class="mt-16">
+            <h2 class="text-2xl font-bold text-gray-800 mb-8">Advanced Budgeting Strategies</h2>
+            
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Beyond the Basics: Taking Your Budget to the Next Level</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-base font-medium text-gray-900">Zero-Based Budgeting</h4>
+                                <p class="mt-1 text-sm text-gray-600">Assign every dollar a job so your income minus expenses equals zero. This maximizes the efficiency of every dirham you earn.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-base font-medium text-gray-900">Multiple Account Method</h4>
+                                <p class="mt-1 text-sm text-gray-600">Use separate accounts for different purposes (bills, discretionary spending, savings) to prevent overspending.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-base font-medium text-gray-900">Value-Based Budgeting</h4>
+                                <p class="mt-1 text-sm text-gray-600">Allocate more money to areas that bring you joy and fulfillment while cutting back on things that don't align with your values.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-600">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-base font-medium text-gray-900">Annual Budgeting</h4>
+                                <p class="mt-1 text-sm text-gray-600">Look beyond monthly cycles to plan for annual expenses, irregular bills, and seasonal spending variations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="bg-blue-50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:flex lg:items-center lg:justify-between">
+                <div class="lg:w-0 lg:flex-1">
+                    <h2 class="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">Get more financial tips</h2>
+                    <p class="mt-3 max-w-3xl text-lg text-gray-500">Sign up for our newsletter to receive the latest budgeting advice and exclusive discounts.</p>
+                </div>
+                <div class="mt-8 lg:mt-0">
+                    <form class="sm:flex">
+                        <label for="email-address" class="sr-only">Email address</label>
+                        <input id="email-address" name="email" type="email" autocomplete="email" required class="w-full px-5 py-3 border border-gray-300 shadow-sm placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs rounded-md" placeholder="Enter your email">
+                        <div class="mt-3 rounded-md shadow sm:mt-0 sm:ml-3 sm:flex-shrink-0">
+                            <button type="submit" class="w-full flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Subscribe
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">SpendSmart</h3>
+                    <p class="text-gray-400">Your partner for smarter financial decisions and better money management.</p>
+                    <div class="flex mt-4 space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="standalone_chatbot_page.html" class="text-gray-400 hover:text-white">Budget Assistant</a></li>
+                        <li><a href="standalone_discounts_page.html" class="text-gray-400 hover:text-white">Discounts</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Budgeting Tips</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-envelope mr-2"></i> info@spendsmart.com</li>
+                        <li><i class="fas fa-phone mr-2"></i> +962 777 123 456</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> Amman, Jordan</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 md:flex md:items-center md:justify-between">
+                <div class="mt-8 md:mt-0 md:order-1">
+                    <p class="text-base text-gray-400">&copy; 2023 SpendSmart. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Form submission (prevent default)
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for subscribing to our newsletter!');
+                    form.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

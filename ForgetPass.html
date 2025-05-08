@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password - SpendSmart</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container">
+    <div class="row justify-content-center min-vh-100 align-items-center py-5">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+        <!-- Logo -->
+        <div class="text-center mb-4">
+          <a href="index.html" class="text-decoration-none">
+            <h1 class="fw-bold text-primary">SpendSmart</h1>
+          </a>
+        </div>
+        
+        <!-- Forgot Password Card -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4 p-md-5">
+            <h2 class="card-title text-center text-primary fw-bold mb-2">Forgot Password</h2>
+            <p class="text-center text-muted mb-4" id="form-description">Enter your email and we'll send you a link to reset your password</p>
+            
+            <!-- Alert for errors -->
+            <div class="alert alert-danger d-none" id="error-alert" role="alert">
+              <i class="bi bi-exclamation-circle-fill me-2"></i>
+              <span id="error-message"></span>
+            </div>
+            
+            <!-- Request Form -->
+            <div id="request-form-container">
+              <form id="forgot-password-form">
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                  <button type="submit" class="btn btn-primary py-2" id="reset-button">Send Reset Link</button>
+                </div>
+              </form>
+            </div>
+            
+            <!-- Success Message -->
+            <div id="success-message" class="d-none text-center py-3">
+              <div class="mb-4">
+                <div class="d-inline-flex justify-content-center align-items-center bg-success-light text-success rounded-circle p-3 mb-3">
+                  <i class="bi bi-check-circle-fill fs-3"></i>
+                </div>
+                <h3 class="h5 mb-2">Reset link sent!</h3>
+                <p class="text-muted mb-0">
+                  We've sent a password reset link to <strong id="sent-email"></strong>. 
+                  Please check your inbox and follow the instructions.
+                </p>
+              </div>
+              <p class="text-muted small">
+                Didn't receive the email? Check your spam folder or 
+                <button type="button" class="btn btn-link p-0 text-primary text-decoration-none" id="try-again">try again</button>
+              </p>
+            </div>
+            
+            <div class="text-center mt-4">
+              <p class="text-muted mb-0">Remember your password? <a href="login.html" class="text-primary fw-medium">Back to login</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom JS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const forgotPasswordForm = document.getElementById('forgot-password-form');
+      const resetButton = document.getElementById('reset-button');
+      const errorAlert = document.getElementById('error-alert');
+      const errorMessage = document.getElementById('error-message');
+      const requestFormContainer = document.getElementById('request-form-container');
+      const successMessage = document.getElementById('success-message');
+      const sentEmail = document.getElementById('sent-email');
+      const tryAgain = document.getElementById('try-again');
+      
+      forgotPasswordForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form values
+        const email = document.getElementById('email').value.trim();
+        
+        // Hide any previous errors
+        errorAlert.classList.add('d-none');
+        
+        // Validate
+        if (!email) {
+          showError('Please enter your email address');
+          return;
+        }
+        
+        // Disable button and show loading state
+        resetButton.disabled = true;
+        resetButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Sending...';
+        
+        // Simulate API call with timeout
+        setTimeout(function() {
+          // Show success message
+          requestFormContainer.classList.add('d-none');
+          sentEmail.textContent = email;
+          successMessage.classList.remove('d-none');
+        }, 1500);
+      });
+      
+      // Try again button
+      if (tryAgain) {
+        tryAgain.addEventListener('click', function() {
+          successMessage.classList.add('d-none');
+          requestFormContainer.classList.remove('d-none');
+          resetButton.disabled = false;
+          resetButton.textContent = 'Send Reset Link';
+        });
+      }
+      
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorAlert.classList.remove('d-none');
+        resetButton.disabled = false;
+        resetButton.textContent = 'Send Reset Link';
+      }
+    });
+  </script>
+</body>
+</html>

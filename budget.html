@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendSmart - Budget Analysis Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary-color: #f0f4f8;
+            --bot-message-bg: #e3f2fd;
+            --user-message-bg: #e8f5e9;
+            --error-color: #f44336;
+            --success-color: #4caf50;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            height: 100vh;
+        }
+        
+        .chatbot-container {
+            max-width: 800px;
+            height: 600px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            scroll-behavior: smooth;
+        }
+        
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+        }
+        
+        .message {
+            max-width: 80%;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 1rem;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .bot-message {
+            background-color: var(--bot-message-bg);
+            border-bottom-left-radius: 0.25rem;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+        
+        .user-message {
+            background-color: var(--user-message-bg);
+            border-bottom-right-radius: 0.25rem;
+            align-self: flex-end;
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .typing-indicator {
+            display: inline-block;
+            padding: 0.75rem 1rem;
+            background-color: var(--bot-message-bg);
+            border-radius: 1rem;
+            border-bottom-left-radius: 0.25rem;
+            margin-bottom: 1rem;
+        }
+        
+        .typing-indicator span {
+            height: 0.5rem;
+            width: 0.5rem;
+            float: left;
+            margin: 0 1px;
+            background-color: #9E9EA1;
+            display: block;
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+        
+        .typing-indicator span:nth-of-type(1) {
+            animation: 1s blink infinite 0.3333s;
+        }
+        
+        .typing-indicator span:nth-of-type(2) {
+            animation: 1s blink infinite 0.6666s;
+        }
+        
+        .typing-indicator span:nth-of-type(3) {
+            animation: 1s blink infinite 0.9999s;
+        }
+        
+        @keyframes blink {
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        .input-error {
+            border-color: var(--error-color) !important;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .language-switcher {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0.5rem;
+        }
+        
+        .language-switcher button {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.25rem 0.5rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .language-switcher button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .analysis-results {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .analysis-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 1rem 0;
+        }
+        
+        .stat {
+            width: calc(33.33% - 0.5rem);
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .positive {
+            color: var(--success-color);
+        }
+        
+        .negative {
+            color: var(--error-color);
+        }
+        
+        .savings-advice {
+            background-color: #f9fbe7;
+            border-left: 4px solid #cddc39;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .expense-chart-container {
+            height: 250px;
+            margin: 1rem 0;
+        }
+        
+        .category-advice {
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .category-advice h4 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        
+        .goal-guidance {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid #1976d2;
+        }
+        
+        .recommendation-card {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .recommendation-card h4 {
+            color: var(--primary-dark);
+            margin-top: 0;
+        }
+        
+        @media (max-width: 640px) {
+            .chatbot-container {
+                height: 100vh;
+                max-width: 100%;
+                border-radius: 0;
+            }
+            
+            .chat-header {
+                border-radius: 0;
+            }
+            
+            .stat {
+                width: 100%;
+            }
+        }
+
+        [dir="rtl"] .bot-message {
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 0.25rem;
+            align-self: flex-start;
+            margin-left: auto;
+            margin-right: 0;
+            text-align: right;
+        }
+        
+        [dir="rtl"] .user-message {
+            border-bottom-right-radius: 1rem;
+            border-bottom-left-radius: 0.25rem;
+            align-self: flex-end;
+            margin-right: auto;
+            margin-left: 0;
+            text-align: left;
+        }
+
+        /* Chart tooltip styles */
+        .chartjs-tooltip {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 3px;
+            padding: 6px;
+            pointer-events: none;
+            position: absolute;
+            transform: translate(-50%, 0);
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body class="flex items-center justify-center p-4">
+    <div class="chatbot-container w-full">
+        <div class="chat-header flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold">SpendSmart</h1>
+                <p class="text-sm" id="header-subtitle">Budget Analysis Assistant</p>
+            </div>
+            <div class="language-switcher">
+                <button id="en-btn" class="active">English</button>
+                <button id="ar-btn">العربية</button>
+            </div>
+        </div>
+        
+        <div class="chat-messages flex flex-col" id="chat-messages"></div>
+        
+        <div class="chat-input">
+            <input type="text" id="user-input" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type your answer here...">
+            <button id="send-btn" class="ml-2 bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 focus:outline-none">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script>
+        // Global variables
+        let currentLanguage = 'en';
+        let currentQuestion = 0;
+        let isWaitingForAnswer = false;
+        let userResponses = {
+            totalIncome: 0,
+            savingsGoal: 0,
+            expenses: {}
+        };
+
+        // Standard expense percentages based on financial planning guidelines
+        const recommendedPercentages = {
+            housing: 30,
+            transportation: 15,
+            food: 15,
+            utilities: 10,
+            healthcare: 5,
+            education: 5,
+            entertainment: 5,
+            debt: 10,
+            savings: 10,
+            other: 5
+        };
+
+        // Questions to ask the user in both languages
+        const questions = [
+            {
+                en: "Hello! I'm the SpendSmart Budget Assistant. I'll help you analyze your finances and provide personalized advice. What's your name?",
+                ar: "مرحبا! أنا مساعد SpendSmart للميزانية. سأساعدك في تحليل أمورك المالية وتقديم نصائح مخصصة. ما هو اسمك؟",
+                validation: null
+            },
+            {
+                en: "Nice to meet you! What's your total monthly income in JOD?",
+                ar: "تشرفت بمعرفتك! ما هو إجمالي دخلك الشهري بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your income in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لدخلك بالدينار الأردني."
+                }
+            },
+            {
+                en: "How much would you like to save each month (in JOD)?",
+                ar: "كم تود أن توفر كل شهر (بالدينار الأردني)؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your savings goal in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لهدف التوفير بالدينار الأردني."
+                }
+            },
+            {
+                en: "How much do you spend on housing per month (rent/mortgage) in JOD?",
+                ar: "كم تنفق على السكن شهريًا (إيجار/رهن عقاري) بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your housing expenses in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لنفقات السكن بالدينار الأردني."
+                },
+                category: "housing"
+            },
+            {
+                en: "How much do you spend on transportation per month (car payments, gas, public transport) in JOD?",
+                ar: "كم تنفق على المواصلات شهريًا (دفعات السيارة، البنزين، المواصلات العامة) بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your transportation expenses in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لنفقات المواصلات بالدينار الأردني."
+                },
+                category: "transportation"
+            },
+            {
+                en: "How much do you spend on food per month (groceries, dining out) in JOD?",
+                ar: "كم تنفق على الطعام شهريًا (البقالة، تناول الطعام بالخارج) بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your food expenses in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لنفقات الطعام بالدينار الأردني."
+                },
+                category: "food"
+            },
+            {
+                en: "How much do you spend on utilities per month (electricity, water, internet) in JOD?",
+                ar: "كم تنفق على المرافق شهريًا (الكهرباء، الماء، الإنترنت) بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your utilities expenses in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لنفقات المرافق بالدينار الأردني."
+                },
+                category: "utilities"
+            },
+            {
+                en: "How much do you spend on healthcare per month (insurance, medications) in JOD?",
+                ar: "كم تنفق على الرعاية الصحية شهريًا (التأمين، الأدوية) بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your healthcare expenses in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لنفقات الرعاية الصحية بالدينار الأردني."
+                },
+                category: "healthcare"
+            },
+            {
+                en: "How much do you spend on education per month (tuition, books, courses) in JOD?",
+                ar: "كم تنفق على التعليم شهريًا (الرسوم الدراسية، الكتب، الدورات) بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your education expenses in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لنفقات التعليم بالدينار الأردني."
+                },
+                category: "education"
+            },
+            {
+                en: "How much do you spend on entertainment per month (movies, hobbies, dining out) in JOD?",
+                ar: "كم تنفق على الترفيه شهريًا (الأفلام، الهوايات، الخروج) بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your entertainment expenses in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لنفقات الترفيه بالدينار الأردني."
+                },
+                category: "entertainment"
+            },
+            {
+                en: "How much do you spend on debt repayment per month (credit cards, loans) in JOD?",
+                ar: "كم تنفق على سداد الديون شهريًا (بطاقات الائتمان، القروض) بالدينار الأردني؟",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your debt repayment in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح لسداد الديون بالدينار الأردني."
+                },
+                category: "debt"
+            },
+            {
+                en: "How much do you spend on other expenses per month in JOD? (clothing, gifts, subscriptions, etc.)",
+                ar: "كم تنفق على النفقات الأخرى شهريًا بالدينار الأردني؟ (الملابس، الهدايا، الاشتراكات، إلخ)",
+                validation: "number",
+                errorMsg: {
+                    en: "Please enter a valid number for your other expenses in JOD.",
+                    ar: "الرجاء إدخال رقم صحيح للنفقات الأخرى بالدينار الأردني."
+                },
+                category: "other"
+            },
+            {
+                en: "That's all I need! I'll analyze your budget now and provide personalized recommendations.",
+                ar: "هذا كل ما أحتاجه! سأقوم بتحليل ميزانيتك الآن وتقديم توصيات مخصصة."
+            }
+        ];
+
+        // DOM elements
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const engBtn = document.getElementById('en-btn');
+        const arBtn = document.getElementById('ar-btn');
+        const headerSubtitle = document.getElementById('header-subtitle');
+
+        // Initialize the chat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set language from localStorage or default to English
+            currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
+            updateLanguageUI();
+            
+            // Start the conversation
+            setTimeout(() => {
+                askQuestion();
+            }, 500);
+            
+            // Event listeners
+            sendBtn.addEventListener('click', handleUserInput);
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleUserInput();
+                }
+            });
+            
+            engBtn.addEventListener('click', function() {
+                setLanguage('en');
+            });
+            
+            arBtn.addEventListener('click', function() {
+                setLanguage('ar');
+            });
+            
+            // Add input validation for numerical fields
+            userInput.addEventListener('input', function() {
+                const currentQ = questions[currentQuestion];
+                if (currentQ && currentQ.validation === 'number') {
+                    validateNumberInput(userInput);
+                }
+            });
+        });
+
+        // Function to validate numerical input
+        function validateNumberInput(inputElement) {
+            const value = inputElement.value;
+            const numberPattern = /^[0-9]*\.?[0-9]*$/;
+            
+            // Remove error styling first
+            inputElement.classList.remove('input-error');
+            const errorElement = document.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.remove();
+            }
+            
+            // Check if input matches number pattern
+            if (value !== '' && !numberPattern.test(value)) {
+                inputElement.classList.add('input-error');
+                
+                // Add error message
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'error-message';
+                errorMsg.textContent = questions[currentQuestion].errorMsg[currentLanguage];
+                inputElement.parentNode.appendChild(errorMsg);
+                
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Function to add message to chat
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'} ${currentLanguage === 'ar' ? 'text-right' : ''}`;
+            messageDiv.innerHTML = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to show bot is typing
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to hide typing indicator
+        function hideTyping() {
+            const typingDiv = document.getElementById('typing-indicator');
+            if (typingDiv) {
+                typingDiv.remove();
+            }
+        }
+
+        // Function to ask the next question
+        function askQuestion() {
+            if (currentQuestion < questions.length) {
+                isWaitingForAnswer = true;
+                showTyping();
+                
+                setTimeout(() => {
+                    hideTyping();
+                    const questionText = questions[currentQuestion][currentLanguage];
+                    addMessage(questionText);
+                    
+                    if (currentQuestion === questions.length - 1) {
+                        // Last question - show the analysis after a delay
+                        isWaitingForAnswer = false;
+                        setTimeout(() => {
+                            analyzeAndDisplayResults();
+                        }, 1500);
+                    } else {
+                        // Focus on input for next answer
+                        userInput.focus();
+                    }
+                }, 800);
+            }
+        }
+
+        // Function to handle user input
+        function handleUserInput() {
+            if (!isWaitingForAnswer) return;
+            
+            const userAnswer = userInput.value.trim();
+            if (!userAnswer) return;
+            
+            // Validate input if needed
+            const currentQ = questions[currentQuestion];
+            if (currentQ.validation === 'number') {
+                if (!validateNumberInput(userInput)) {
+                    return;
+                }
+            }
+            
+            // Add user message to chat
+            addMessage(userAnswer, true);
+            
+            // Process the answer
+            processAnswer(userAnswer);
+            
+            // Clear input
+            userInput.value = '';
+        }
+
+        // Function to process user answers
+        function processAnswer(answer) {
+            isWaitingForAnswer = false;
+            
+            // Store the answer based on current question
+            if (currentQuestion === 0) {
+                userResponses.name = answer;
+            } else if (currentQuestion === 1) {
+                userResponses.totalIncome = parseFloat(answer);
+            } else if (currentQuestion === 2) {
+                userResponses.savingsGoal = parseFloat(answer);
+            } else if (currentQuestion >= 3 && currentQuestion <= 11) {
+                const category = questions[currentQuestion].category;
+                userResponses.expenses[category] = parseFloat(answer);
+            }
+            
+            // Move to next question
+            currentQuestion++;
+            setTimeout(() => {
+                askQuestion();
+            }, 500);
+        }
+
+        // Function to set language
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('preferredLanguage', lang);
+            updateLanguageUI();
+        }
+
+        // Function to update UI based on language
+        function updateLanguageUI() {
+            document.body.setAttribute('dir', currentLanguage === 'ar' ? 'rtl' : 'ltr');
+            
+            // Update header text
+            headerSubtitle.textContent = currentLanguage === 'ar' ? 'مساعد تحليل الميزانية' : 'Budget Analysis Assistant';
+            
+            // Update input placeholder
+            userInput.placeholder = currentLanguage === 'ar' ? 'اكتب إجابتك هنا...' : 'Type your answer here...';
+            
+            // Update language buttons
+            engBtn.classList.toggle('active', currentLanguage === 'en');
+            arBtn.classList.toggle('active', currentLanguage === 'ar');
+        }
+
+        // Function to analyze budget data and display results
+        function analyzeAndDisplayResults() {
+            // Calculate total expenses
+            let totalExpenses = 0;
+            for (const category in userResponses.expenses) {
+                totalExpenses += userResponses.expenses[category] || 0;
+            }
+            
+            // Calculate remaining money
+            const remainingMoney = userResponses.totalIncome - totalExpenses;
+            
+            // Calculate savings shortfall/surplus
+            const savingsComparison = remainingMoney - userResponses.savingsGoal;
+            
+            // Generate overall advice
+            let overallAdvice = '';
+            if (savingsComparison >= 0) {
+                overallAdvice = currentLanguage === 'ar' 
+                    ? `مبروك! أنت توفر ${remainingMoney.toFixed(2)} دينار أردني شهريًا، وهذا يتجاوز هدفك البالغ ${userResponses.savingsGoal.toFixed(2)} دينار أردني بمقدار ${savingsComparison.toFixed(2)} دينار أردني. استمر في العمل الجيد!`
+                    : `Congratulations! You're saving ${remainingMoney.toFixed(2)} JOD monthly, which exceeds your goal of ${userResponses.savingsGoal.toFixed(2)} JOD by ${savingsComparison.toFixed(2)} JOD. Keep up the good work!`;
+            } else {
+                overallAdvice = currentLanguage === 'ar'
+                    ? `أنت تحتاج إلى تعديل ميزانيتك للوصول إلى هدف التوفير البالغ ${userResponses.savingsGoal.toFixed(2)} دينار أردني. حاليًا، أنت بحاجة إلى توفير ${Math.abs(savingsComparison).toFixed(2)} دينار أردني إضافي شهريًا.`
+                    : `You need to adjust your budget to reach your savings goal of ${userResponses.savingsGoal.toFixed(2)} JOD. Currently, you need to save an additional ${Math.abs(savingsComparison).toFixed(2)} JOD monthly.`;
+            }
+            
+            // Analyze spending by category compared to recommended percentages
+            const spendingAnalysis = [];
+            for (const category in userResponses.expenses) {
+                const actualAmount = userResponses.expenses[category] || 0;
+                const actualPercentage = (actualAmount / userResponses.totalIncome) * 100;
+                const recommendedPercentage = recommendedPercentages[category];
+                const recommendedAmount = (recommendedPercentage / 100) * userResponses.totalIncome;
+                const difference = actualAmount - recommendedAmount;
+                
+                spendingAnalysis.push({
+                    category,
+                    actualAmount,
+                    actualPercentage,
+                    recommendedPercentage,
+                    recommendedAmount,
+                    difference
+                });
+            }
+            
+            // Sort by highest overspending
+            spendingAnalysis.sort((a, b) => b.difference - a.difference);
+            
+            // Create category-specific advice for top 3 problem areas
+            const categoryAdvice = [];
+            let totalPotentialSavings = 0;
+            
+            const problemCategories = spendingAnalysis.filter(item => item.difference > 0).slice(0, 3);
+            problemCategories.forEach(item => {
+                const advice = {
+                    category: item.category,
+                    advice: '',
+                    savings: item.difference
+                };
+                
+                totalPotentialSavings += item.difference;
+                
+                if (currentLanguage === 'ar') {
+                    const categoryTranslations = {
+                        housing: 'السكن',
+                        transportation: 'المواصلات',
+                        food: 'الطعام',
+                        utilities: 'المرافق',
+                        healthcare: 'الرعاية الصحية',
+                        education: 'التعليم',
+                        entertainment: 'الترفيه',
+                        debt: 'الديون',
+                        other: 'نفقات أخرى'
+                    };
+                    
+                    advice.advice = `أنت تنفق ${item.actualAmount.toFixed(2)} دينار أردني (${item.actualPercentage.toFixed(1)}% من دخلك) على ${categoryTranslations[item.category]}. الإنفاق الموصى به هو ${item.recommendedAmount.toFixed(2)} دينار أردني (${item.recommendedPercentage}%). يمكنك توفير ${item.difference.toFixed(2)} دينار أردني شهريًا بتخفيض هذه الفئة.`;
+                } else {
+                    advice.advice = `You're spending ${item.actualAmount.toFixed(2)} JOD (${item.actualPercentage.toFixed(1)}% of your income) on ${item.category}. Recommended spending is ${item.recommendedAmount.toFixed(2)} JOD (${item.recommendedPercentage}%). You could save ${item.difference.toFixed(2)} JOD monthly by reducing this category.`;
+                }
+                
+                categoryAdvice.push(advice);
+            });
+            
+            // Goal-oriented guidance
+            let goalGuidance = '';
+            
+            if (savingsComparison < 0) {
+                if (totalPotentialSavings >= Math.abs(savingsComparison)) {
+                    goalGuidance = currentLanguage === 'ar'
+                        ? `لتحقيق هدفك في التوفير البالغ ${userResponses.savingsGoal.toFixed(2)} دينار أردني شهريًا، يمكنك تعديل الفئات المذكورة أعلاه للتوفير ${totalPotentialSavings.toFixed(2)} دينار أردني إضافي، وهو أكثر من ${Math.abs(savingsComparison).toFixed(2)} دينار أردني الذي تحتاجه.`
+                        : `To achieve your savings goal of ${userResponses.savingsGoal.toFixed(2)} JOD monthly, you can adjust the categories mentioned above to save an additional ${totalPotentialSavings.toFixed(2)} JOD, which is more than the ${Math.abs(savingsComparison).toFixed(2)} JOD you need.`;
+                } else {
+                    goalGuidance = currentLanguage === 'ar'
+                        ? `لتحقيق هدفك في التوفير، ستحتاج إلى تخفيضات أكبر في نفقاتك. فكر في مراجعة بنود الميزانية الأخرى أو زيادة دخلك.`
+                        : `To achieve your savings goal, you'll need larger reductions in your expenses. Consider reviewing other budget items or increasing your income.`;
+                }
+            } else {
+                goalGuidance = currentLanguage === 'ar'
+                    ? `أنت بالفعل تحقق هدف التوفير الخاص بك! يمكنك الاستمرار في توفير ${savingsComparison.toFixed(2)} دينار أردني إضافي شهريًا أو استخدامه للاستثمار أو سداد الديون.`
+                    : `You are already meeting your savings goal! You can continue saving the extra ${savingsComparison.toFixed(2)} JOD monthly or use it for investments or debt repayment.`;
+            }
+            
+            // Specific actionable tips
+            const actionableTips = getActionableTips(spendingAnalysis);
+            
+            // Create analysis HTML
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                
+                // Generate the analysis results HTML
+                const resultsHTML = `
+                    <div class="analysis-results">
+                        <h3 class="text-xl font-bold text-blue-700 mb-3">${currentLanguage === 'ar' ? 'تحليل الميزانية الشخصي' : 'Personal Budget Analysis'}</h3>
+                        
+                        <div class="analysis-stats">
+                            <div class="stat">
+                                <span class="stat-label">${currentLanguage === 'ar' ? 'إجمالي الدخل:' : 'Total Income:'}</span>
+                                <span class="stat-value">${userResponses.totalIncome.toFixed(2)} JOD</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">${currentLanguage === 'ar' ? 'إجمالي النفقات:' : 'Total Expenses:'}</span>
+                                <span class="stat-value">${totalExpenses.toFixed(2)} JOD</span>
+                            </div>
+                            <div class="stat ${remainingMoney >= 0 ? 'positive' : 'negative'}">
+                                <span class="stat-label">${currentLanguage === 'ar' ? 'المال المتبقي:' : 'Remaining Money:'}</span>
+                                <span class="stat-value">${remainingMoney.toFixed(2)} JOD</span>
+                            </div>
+                        </div>
+                        
+                        <div class="savings-advice">
+                            <p class="text-base">${overallAdvice}</p>
+                        </div>
+                        
+                        <div class="expense-chart-container">
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                        
+                        <h4 class="mt-4 mb-2 font-semibold text-lg text-blue-800">${currentLanguage === 'ar' ? 'توصيات محددة:' : 'Specific Recommendations:'}</h4>
+                        
+                        ${categoryAdvice.map(item => `
+                            <div class="category-advice">
+                                <h4 class="font-semibold">${currentLanguage === 'ar' ? getCategoryNameArabic(item.category) : getCategoryNameEnglish(item.category)}</h4>
+                                <p>${item.advice}</p>
+                            </div>
+                        `).join('')}
+                        
+                        <div class="goal-guidance mt-4">
+                            <h4 class="font-semibold mb-2 text-blue-800">${currentLanguage === 'ar' ? 'خطة الوصول للهدف:' : 'Goal Achievement Plan:'}</h4>
+                            <p>${goalGuidance}</p>
+                        </div>
+                        
+                        <div class="recommendation-card mt-4">
+                            <h4 class="font-semibold mb-2">${currentLanguage === 'ar' ? 'نصائح عملية:' : 'Actionable Tips:'}</h4>
+                            <ul class="list-disc pl-5">
+                                ${actionableTips.map(tip => `<li class="mb-2">${tip}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                
+                addMessage(resultsHTML);
+                
+                // Create chart
+                setTimeout(() => {
+                    createExpensesChart();
+                }, 100);
+                
+                // Add restart option
+                setTimeout(() => {
+                    const restartMsg = currentLanguage === 'ar' 
+                        ? 'هل تريد إعادة تحليل ميزانيتك مع أرقام مختلفة؟ اكتب "إعادة" أو قم بتحديث الصفحة.' 
+                        : 'Would you like to analyze your budget again with different numbers? Type "restart" or refresh the page.';
+                    
+                    addMessage(restartMsg);
+                    isWaitingForAnswer = true;
+                    userInput.addEventListener('keypress', function restartHandler(e) {
+                        if (e.key === 'Enter') {
+                            const input = userInput.value.trim().toLowerCase();
+                            if (input === 'restart' || input === 'إعادة') {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                }, 2000);
+            }, 1500);
+        }
+
+        // Helper function to get category name in Arabic
+        function getCategoryNameArabic(category) {
+            const translations = {
+                housing: 'السكن',
+                transportation: 'المواصلات',
+                food: 'الطعام',
+                utilities: 'المرافق',
+                healthcare: 'الرعاية الصحية',
+                education: 'التعليم',
+                entertainment: 'الترفيه',
+                debt: 'الديون',
+                other: 'نفقات أخرى'
+            };
+            return translations[category] || category;
+        }
+
+        // Helper function to get category name in English
+        function getCategoryNameEnglish(category) {
+            const names = {
+                housing: 'Housing',
+                transportation: 'Transportation',
+                food: 'Food',
+                utilities: 'Utilities',
+                healthcare: 'Healthcare',
+                education: 'Education',
+                entertainment: 'Entertainment',
+                debt: 'Debt Repayment',
+                other: 'Other Expenses'
+            };
+            return names[category] || category;
+        }
+
+        // Function to get actionable tips based on spending analysis
+        function getActionableTips(analysis) {
+            const tips = [];
+            const highestCategories = analysis.filter(item => item.difference > 0).slice(0, 3);
+            
+            highestCategories.forEach(item => {
+                if (currentLanguage === 'ar') {
+                    switch(item.category) {
+                        case 'housing':
+                            tips.push(`السكن: فكر في مشاركة السكن مع آخرين أو البحث عن شقة أقل تكلفة. يمكنك توفير حوالي ${(item.difference * 0.7).toFixed(2)} دينار أردني شهريًا.`);
+                            break;
+                        case 'transportation':
+                            tips.push(`المواصلات: استخدم وسائل النقل العام أو مشاركة الركوب. يمكنك توفير حوالي ${(item.difference * 0.6).toFixed(2)} دينار أردني شهريًا.`);
+                            break;
+                        case 'food':
+                            tips.push(`الطعام: قم بإعداد وجبات في المنزل بدلاً من تناول الطعام بالخارج. خطط لوجباتك أسبوعيًا. يمكنك توفير حوالي ${(item.difference * 0.8).toFixed(2)} دينار أردني شهريًا.`);
+                            break;
+                        case 'entertainment':
+                            tips.push(`الترفيه: ابحث عن أنشطة مجانية أو منخفضة التكلفة. حدد ميزانية أسبوعية للترفيه وهي ${(item.recommendedAmount / 4).toFixed(2)} دينار أردني.`);
+                            break;
+                        case 'utilities':
+                            tips.push(`المرافق: قم بتثبيت أجهزة موفرة للطاقة وقلل من استخدام المياه. يمكنك توفير حوالي ${(item.difference * 0.5).toFixed(2)} دينار أردني شهريًا.`);
+                            break;
+                        default:
+                            tips.push(`${getCategoryNameArabic(item.category)}: قلل الإنفاق بنسبة ${Math.min(50, Math.round((item.difference / item.actualAmount) * 100))}% للوصول إلى الميزانية الموصى بها وهي ${item.recommendedAmount.toFixed(2)} دينار أردني شهريًا.`);
+                    }
+                } else {
+                    switch(item.category) {
+                        case 'housing':
+                            tips.push(`Housing: Consider getting a roommate or looking for a less expensive apartment. You could save approximately ${(item.difference * 0.7).toFixed(2)} JOD monthly.`);
+                            break;
+                        case 'transportation':
+                            tips.push(`Transportation: Use public transport or carpooling. You could save approximately ${(item.difference * 0.6).toFixed(2)} JOD monthly.`);
+                            break;
+                        case 'food':
+                            tips.push(`Food: Prepare meals at home instead of eating out. Plan your meals weekly. You could save approximately ${(item.difference * 0.8).toFixed(2)} JOD monthly.`);
+                            break;
+                        case 'entertainment':
+                            tips.push(`Entertainment: Look for free or low-cost activities. Set a weekly entertainment budget of ${(item.recommendedAmount / 4).toFixed(2)} JOD.`);
+                            break;
+                        case 'utilities':
+                            tips.push(`Utilities: Install energy-efficient devices and reduce water usage. You could save approximately ${(item.difference * 0.5).toFixed(2)} JOD monthly.`);
+                            break;
+                        default:
+                            tips.push(`${getCategoryNameEnglish(item.category)}: Reduce spending by ${Math.min(50, Math.round((item.difference / item.actualAmount) * 100))}% to reach the recommended budget of ${item.recommendedAmount.toFixed(2)} JOD monthly.`);
+                    }
+                }
+            });
+            
+            // Add general tips
+            if (currentLanguage === 'ar') {
+                tips.push(`تتبع نفقاتك اليومية لمدة شهر كامل لتحديد مجالات التوفير الإضافية.`);
+                tips.push(`قم بتحديد "يوم بدون إنفاق" مرة واحدة في الأسبوع حيث تتجنب أي مشتريات غير ضرورية.`);
+            } else {
+                tips.push(`Track your daily expenses for a full month to identify additional savings areas.`);
+                tips.push(`Designate one "no-spend day" per week where you avoid any non-essential purchases.`);
+            }
+            
+            return tips;
+        }
+
+        // Function to create expenses chart
+        function createExpensesChart() {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            
+            // Prepare data
+            const categories = Object.keys(userResponses.expenses);
+            const values = Object.values(userResponses.expenses);
+            
+            // Translate categories if needed
+            const translatedCategories = categories.map(category => {
+                return currentLanguage === 'ar' ? getCategoryNameArabic(category) : getCategoryNameEnglish(category);
+            });
+            
+            // Create chart
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: translatedCategories,
+                    datasets: [
+                        {
+                            label: currentLanguage === 'ar' ? 'النفقات الفعلية (دينار أردني)' : 'Actual Expenses (JOD)',
+                            data: values,
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: currentLanguage === 'ar' ? 'النفقات الموصى بها (دينار أردني)' : 'Recommended Expenses (JOD)',
+                            data: categories.map(category => (recommendedPercentages[category] / 100) * userResponses.totalIncome),
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1,
+                            type: 'bar'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: currentLanguage === 'ar' ? 'المبلغ (دينار أردني)' : 'Amount (JOD)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += parseFloat(context.raw).toFixed(2) + ' JOD';
+                                    
+                                    // Add percentage of income
+                                    const percentage = (context.raw / userResponses.totalIncome * 100).toFixed(1);
+                                    label += ` (${percentage}% of income)`;
+                                    
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

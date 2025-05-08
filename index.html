@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendSmart - Spend Smart, Live Better</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        /* Custom Color Palette - Blues */
+        :root {
+            --primary-blue: #0056b3;
+            --secondary-blue: #007bff;
+            --light-blue: #e6f2ff;
+            --dark-blue: #004085;
+            --accent-blue: #00a0e9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            color: var(--secondary-blue);
+        }
+
+        .navbar-brand:hover i {
+            transform: rotate(15deg);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .nav-link:after {
+            /* content: '' means empty  */
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--secondary-blue);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-blue);
+            border-color: var(--dark-blue);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--light-blue) 0%, #ffffff 100%);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background-color: rgba(0, 123, 255, 0.1);
+            top: -100px;
+            right: -100px;
+            z-index: 0;
+            /*z-index: 0 mean background image will be on bottom of this background*/
+        }
+
+        .hero:after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: rgba(0, 123, 255, 0.05);
+            bottom: -50px;
+            left: -50px;
+            z-index: 0;
+        }
+
+        .hero h1 {
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .hero-image {
+            animation: float 6s ease-in-out infinite;
+            /* ease-in-out means it will start slow and end fast */
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Why SpendSmart Section */
+        .why-spendsmart {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary-blue);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .feature-card {
+            border: 2px solid var(--light-blue);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            /* ease  stand for speed */
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 86, 179, 0.1);
+            border-color: var(--secondary-blue);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-blue);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background-color: var(--light-blue);
+        }
+
+        .feature-item {
+            margin-bottom: 100px;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background-color: rgba(0, 123, 255, 0.2);
+            color: var(--primary-blue);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-badge i {
+            margin-right: 5px;
+        }
+
+        .feature-item h3 {
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+        }
+
+        .feature-item p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .feature-img {
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* Call to Action*/
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--light-blue) 0%, #ffffff 100%);
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-weight: 700;
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #f8f9fa;
+            padding: 60px 0 0;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo i {
+            font-size: 1.5rem;
+            color: var(--secondary-blue);
+            margin-right: 10px;
+        }
+
+        .footer-logo span {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+        }
+
+        .footer-text {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .footer-links h5 {
+            font-weight: 600;
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-blue);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #eee;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        .footer-bottom p {
+            color: #999;
+            margin: 0;
+        }
+
+        .social-links a {
+            color: #666;
+            margin-left: 15px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--secondary-blue);
+            transform: translateY(-3px);
+        }
+
+        /* Animation Classes */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 991px) {
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero-image {
+                margin-top: 40px;
+            }
+
+            .feature-item {
+                margin-bottom: 60px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .navbar {
+                padding: 10px 0;
+            }
+
+            .section-title {
+                margin-bottom: 40px;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+
+            .feature-item {
+                text-align: center;
+            }
+
+            .feature-img {
+                margin-top: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <!-- Icon bring from fontawesome -->
+            <a class="navbar-brand" href="#"> <i class="fas fa-wallet"></i> SpendSmart </a>
+            <!--data-bs-toggle="collapse" mean that when the button is clicked the navbar will collapse  -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="budget.html">Budget Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Discount.html">Discounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Tips.html">Tips</a>
+                    </li>
+
+                </ul>
+                <div class="ms-lg-4 mt-3 mt-lg-0">
+                    <a href="logIn.html" class="btn btn-outline-primary me-2">Log In</a>
+                    <a href="SignUp.html" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                    <h1 class="display-4">Spend Smart, Live Better</h1>
+                    <p>Take control of your finances with Jordan's premier budget management and discount discovery
+                        platform.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="#" class="btn btn-primary btn-lg me-2 mb-2 mb-md-0">Start Saving Now</a>
+                        <a href="#" class="btn btn-outline-primary btn-lg">Explore Discounts</a>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                    <!-- <img src="https://placehold.co/600x400/e6f2ff/0056b3?text=SpendSmart" alt="SpendSmart Hero Image" class="img-fluid hero-image"> -->
+                    <img src="Media/Media/Hero.png" alt="SpendSmart Hero Image" class="img-fluid hero-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why SpendSmart Section -->
+    <section class="why-spendsmart" id="why">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up" data-aos-duration="800">
+                <!-- data-aos from animation on scroll and fade-up mean animation from top to bottom -->
+                <h2>Why SpendSmart</h2>
+                <p>SpendSmart empowers you to make smarter financial decisions with tools designed specifically for
+                    Jordan's market.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h3>Take Control of Your Budget</h3>
+                        <p>Set financial goals, track expenses, and monitor your progress with our intuitive budgeting
+                            tools.</p>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <h3>Discover Real-Time Discounts</h3>
+                        <p>Access the latest deals and discounts across Jordan, updated in real-time and tailored to
+                            your preferences.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Personalized Financial Tips</h3>
+                        <p>Receive smart, personalized recommendations based on your spending habits and financial
+                            goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up" data-aos-duration="800">
+                <h2>Powerful Features</h2>
+                <p>Discover all the tools SpendSmart offers to help you manage your finances and save money.</p>
+            </div>
+
+            <!-- Personalized Budgeting Tools -->
+            <div class="feature-item">
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="feature-badge">
+                            <i class="fas fa-chart-line"></i> Budgeting Tools
+                        </div>
+                        <h3>Personalized Budgeting Tools</h3>
+                        <p>Create custom budgets based on your income and expenses. Set financial goals and track your
+                            progress with visual charts and reports. Get insights into your spending patterns and
+                            identify areas where you can save.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More <i
+                                class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                        <img src="https://placehold.co/600x400/e6f2ff/0056b3?text=Budgeting+Tools" alt="Budgeting Tools" class="img-fluid feature-img">
+                        <!-- <img src="Media/Media/budg.png" alt="Budgeting Tools" class="img-fluid feature-img"> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Recommendation System -->
+            <div class="feature-item">
+                <div class="row align-items-center flex-lg-row-reverse">
+                    <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                        <div class="feature-badge">
+                            <i class="fas fa-shield-alt"></i> Smart Recommendations
+                        </div>
+                        <h3>Smart Recommendation System</h3>
+                        <p>Our AI-powered system analyzes your spending habits and suggests ways to save money. Get
+                            personalized recommendations for budget adjustments and discover deals that match your
+                            interests and needs.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More <i
+                                class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                        <img src="https://placehold.co/600x400/e6f2ff/0056b3?text=Smart+Recommendations"
+                            alt="Smart Recommendations" class="img-fluid feature-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discount Database -->
+            <div class="feature-item">
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="feature-badge">
+                            <i class="fas fa-tag"></i> Discount Database
+                        </div>
+                        <h3>Comprehensive Discount Database</h3>
+                        <p>Browse and filter discounts by category, location, and expiration date. Find the best deals
+                            in Jordan for restaurants, retail, services, and more. Save your favorite deals and get
+                            notified when similar offers become available.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More <i
+                                class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                        <img src="https://placehold.co/600x400/e6f2ff/0056b3?text=Discount+Database"
+                            alt="Discount Database" class="img-fluid feature-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community & Reviews -->
+            <div class="feature-item" id="community">
+                <div class="row align-items-center flex-lg-row-reverse">
+                    <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                        <div class="feature-badge">
+                            <i class="fas fa-users"></i> Community
+                        </div>
+                        <h3>Community & Reviews</h3>
+                        <p>Connect with other budget-conscious individuals in Jordan. Share your experiences, tips, and
+                            reviews of local businesses. Learn from others' financial journeys and contribute your own
+                            insights to help the community.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More <i
+                                class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                        <img src="https://placehold.co/600x400/e6f2ff/0056b3?text=Community+%26+Reviews"
+                            alt="Community & Reviews" class="img-fluid feature-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Educational Resources -->
+            <div class="feature-item" id="education">
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                        <div class="feature-badge">
+                            <i class="fas fa-book-open"></i> Education
+                        </div>
+                        <h3>Educational Resources</h3>
+                        <p>Access a wealth of articles, videos, and guides about budgeting, saving, and financial
+                            wellness. Learn practical tips for managing your finances in Jordan's economic environment.
+                            Stay updated on financial news and trends that affect your wallet.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More <i
+                                class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                        <img src="https://placehold.co/600x400/e6f2ff/0056b3?text=Educational+Resources"
+                            alt="Educational Resources" class="img-fluid feature-img">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Alerts -->
+            <div class="feature-item">
+                <div class="row align-items-center flex-lg-row-reverse">
+                    <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000">
+                        <div class="feature-badge">
+                            <i class="fas fa-bell"></i> Alerts
+                        </div>
+                        <h3>Custom Alerts</h3>
+                        <p>Set up personalized notifications for new discounts, budget updates, and financial
+                            milestones. Choose how and when you want to be notified—via email, SMS, or push
+                            notifications. Stay on top of your finances without constant monitoring.</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More <i
+                                class="fas fa-chevron-right ms-1"></i></a>
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                        <img src="https://placehold.co/600x400/e6f2ff/0056b3?text=Custom+Alerts" alt="Custom Alerts"
+                            class="img-fluid feature-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta">
+        <div class="container">
+            <div data-aos="fade-up" data-aos-duration="1000">
+                <h2>Ready to Start Saving?</h2>
+                <p>Join thousands of users in Jordan who are taking control of their finances and discovering amazing
+                    deals with SpendSmart.</p>
+                <div class="d-flex justify-content-center flex-wrap gap-2">
+                    <a href="#" class="btn btn-primary btn-lg me-2 mb-2 mb-md-0">Sign Up for Free</a>
+                    <a href="#" class="btn btn-outline-primary btn-lg">Schedule a Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <footer class="py-3 my-4 text-center">
+                <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                    <li class="nav-item"><a href="index.html" class="nav-link px-2 text-muted">Home</a></li>
+                    <li class="nav-item"><a href="Discount.html" class="nav-link px-2 text-muted">Discounts</a></li>
+                    <li class="nav-item"><a href="budget.html" class="nav-link px-2 text-muted">Budget Analysis</a></li>
+                    <li class="nav-item"><a href="Tips.html" class="nav-link px-2 text-muted">Tips</a></li>
+                    <li class="nav-item"><a href="AddOffers.html" class="nav-link px-2 text-muted">Add Offer</a></li>
+                </ul>
+                <p class="text-center text-muted">© 2025 University Of Jordan, SpendSmart</p>
+            </footer>
+        </div>
+
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS animation
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+
+        // Add scroll animation for elements with fade-up class
+        document.addEventListener('DOMContentLoaded', function () {
+            const fadeElements = document.querySelectorAll('.fade-up');
+
+            function checkFade() {
+                fadeElements.forEach(element => {
+
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    // getBoundingClientRect() returns the size of an element and its position relative to the viewport
+                    // top property returns the distance from the top of the viewport to the top of the element
+                    // elementTop < windowHeight - 100 means that the element is within 100px of the bottom of the viewport
+                    if (elementTop < windowHeight - 100) {
+                        element.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', checkFade);
+            checkFade(); // Check on initial load
+        });
+    </script>
+</body>
+
+</html>
