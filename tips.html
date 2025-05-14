@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tips page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+         <link rel="icon" href="Media/budg.png">
+  <style>
+    body {
+      height: 100vh;
+      overflow: hidden;
+      transition: background-image 0.6s ease-in-out;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .fa-wallet {
+            color: #628ecb;
+            font-size: 20px;
+           
+        }
+    .hero {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      padding: 2rem;
+      color:#fdfbf5;
+      text-shadow: 0 1px 5px rgba(80, 3, 3, 0.8);
+    }
+
+    .hero-content {
+      max-width: 600px;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: bold;
+    }
+
+    .swiper-container {
+      position: absolute;
+      bottom: 15%;
+      right: 2rem;
+      width: 80%;
+    }
+
+    .swiper-slide {
+      background-size: cover;
+      background-position: center;
+      border-radius: 1rem;
+      height:20rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.4s ease;
+    }
+
+    a.tip-link {
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 2rem;
+      background-color: #7AB2D3;
+      color: #fffdfd;
+      transition: background 0.3s ease;
+    }
+
+    a.tip-link:hover {
+      background-color: #4A628A;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+      transform: translateY(-10px);
+      color: #e2e5e8;
+      background-color: #7AB2D3;
+      border: 1px solid;
+      border-radius: 100%;
+      width: 50px;
+        height: 50px;
+    }
+
+    .swiper-slide.hidden-slide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .navigation {
+        position: absolute;
+    display: flex;
+    bottom: 10%;
+    left: 50%;
+    }
+    .swiper-button-next, .swiper-rtl .swiper-button-prev {
+    right: auto;
+    left: 50px;
+}
+.swiper-button-prev, .swiper-rtl .swiper-button-next {
+    left: -10px;
+    right: auto;
+}
+.swiper-button-next:after, .swiper-button-prev:after {
+    font-size: 16px;
+}
+.text-left {
+  animation: slide-in-left .4s;
+}
+
+.text-right {
+  animation: slide-in-right .4s;
+}
+@keyframes slide-in-left {
+    0% {
+        transform: translateX(-20%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-in-right {
+    0% {
+        transform: translateX(20%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+  </style>
+</head>
+
+
+
+
+
+<body style="background-image: url('./Media/ design\(8\).png');" data-bg="./Media/Untitled\ design\(8\).png" 
+data-title="Ways to make money from the Internet"
+ data-text="A video from the Online Lessons channel discusses ways to make money online and increase your sources of income.."
+  data-link="https://youtu.be/wAIIct0rNZU?si=duAyUiHhcqcePIbT">
+     
+
+
+
+ <!-- Navigation -->
+ <nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+      <!-- Icon bring from fontawesome -->
+    <a class="navbar-brand" href="index.html"> <i class="fas fa-wallet"></i> SpendSmart </a>
+      <!--data-bs-toggle="collapse" mean that when the button is clicked the navbar will collapse  -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                  <a class="nav-link active" href="index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="Budgeting.html">Budgeting</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="discounts.html">Discounts</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#">Financial Planner</a>
+              </li>
+
+          </ul>
+          <div class="ms-lg-4 mt-3 mt-lg-0">
+              <a href="LogIn.html" class="btn btn-outline-primary me-2">Log In</a>
+              <a href="SignUp.html" class="btn btn-primary">Sign Up</a>
+          </div>
+      </div>
+  </div>
+</nav>
+
+
+
+
+  <div class="hero d-flex align-items-end">
+    <div class="hero-content mb-5">
+      <h1 class="tip-title"></h1>
+      <p class="tip-text"></p>
+      <a class="tip-link">Discover Now</a>
+    </div>
+    
+    <div class="d-flex flex-column">
+        <div class="swiper-container swiper">
+          <div class="swiper-wrapper">
+           
+            
+            <div class="swiper-slide" style="background-image: url('./Media/Untitled\ design\(10\).png');" 
+                 data-bg="./Media/Untitled\ design\(10\).png" 
+                 data-title="The most important rule in investment" 
+                 data-text="What is investment, why do we invest, and how? This clip will answer these questions." 
+                 data-link="https://youtu.be/bFfeCSbLaB8?si=EDYwvHJEwK6WHj4u">
+            </div>
+            <div class="swiper-slide" style="background-image: url('./Media/Untitled\ design\(11\).png');" 
+                 data-bg="./Media/Untitled\ design\(11\).png" 
+                 data-title="Best money management system" 
+                 data-text="A video from the Dupamicaffeine channel shows a practical way to divide your monthly salary and increase your income.." 
+                 data-link="https://youtu.be/loGAyJTbu88?si=C6H6odrof4pjwXlS">
+            </div>
+            <div class="swiper-slide" style="background-image: url('./Media/Untitled\ design\(14\).png');" 
+                 data-bg="./Media/Untitled\ design\(14\).png" 
+                 data-title="How to be creative in financial management and save your money?" 
+                 data-text="YouTube video showing ways to manage your finances well." 
+                 data-link="https://youtu.be/s0t_4MSQEYQ?si=aX-tJnzhbu4Alc-w">
+            </div>
+            
+
+            <div class="swiper-slide" style="background-image: url('.//Media/Untitled\ design\(12\).png');" 
+            data-bg=".//Media/Untitled\ design\(12\).png" 
+            data-title="financial freedom" 
+            data-text="YouTube clip from the show 'Seen' talking about financial freedom." 
+            data-link="https://youtu.be/kZTSzFfMFjY?si=yGGtVtRu5M5NTLLw">
+       </div>
+       
+            <div class="swiper-slide" style="opacity: 0;"></div> <!-- Don't delete this -->
+            
+          </div>
+          
+          </div>
+          <div class="navigation">S
+              <!-- Navigation buttons -->
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+          </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    function restartAnimation($el, className) {
+      $el.removeClass(className);
+      void $el[0].offsetWidth; // force reflow
+      $el.addClass(className);
+    }
+
+    var setData = function (tip) {
+      if (tip.bg) $('body').css('background-image', `url('${tip.bg}')`);
+
+      setTimeout(() => {
+        $('.tip-title').text(tip.title || '');
+        $('.tip-text').text(tip.text || '');
+        $('.tip-link').attr('href', tip.link || '#');
+
+        // Restart animations
+        restartAnimation($('.tip-title'), 'text-right');
+        restartAnimation($('.tip-text'), 'text-left');
+      }, 100); // reduce delay for snappier experience
+    };
+
+    setData($('body').data()); // init data
+    const swiper = new Swiper('.swiper', {
+      slidesPerView: 5,
+      spaceBetween: 20,
+      centeredSlides: true,
+      loop: false,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      on: {
+        slideChange: function () {
+          const realIndex = swiper.realIndex;
+  
+          if (realIndex - 1 == -1) {
+            setData($('body').data())
+          } else {
+            const prevSlide = swiper.slides[realIndex - 1];
+            setData($(prevSlide).data())
+          }
+
+          // Hide all previous slides
+          swiper.slides.forEach((slide, index) => {
+            if (index < realIndex) {
+              slide.classList.add('hidden-slide');
+            } else {
+              slide.classList.remove('hidden-slide');
+            }
+          });
+        }
+      }
+      
+    });
+    
+  </script>
+  
+</body>
+</html>
