@@ -13,8 +13,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-     <link rel="icon" href="Media/budg.png">
+        <link rel="icon" href="Media/budg.png">
     <style>
+         :root {
+            --primary-blue: #0056b3;
+            --secondary-blue: #007bff;
+            --light-blue: #e6f2ff;
+            --dark-blue: #004085;
+            --accent-blue: #00a0e9;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -28,14 +35,14 @@
         }
 
         .blu {
-            background: #628ecb;
+            background: var(--primary-blue);
             clip-path: polygon(0 0, 100% 0, 100% 100%, 15% 100%);
             height: 100vh;
             width: 50%;
         }
 
         .fa-wallet {
-            color: #628ecb;
+            color: var(--primary-blue);
             font-size: 20px;
             position: absolute;
             top: 20px;
@@ -44,7 +51,7 @@
 
         .SignUp-btn {
 
-            background-color: #628ecb;
+            background-color: var(--primary-blue);
             border: 1px solid #f0f3fa;
             color: #f0f3fa;
             width: 100px;
@@ -55,18 +62,19 @@
         }
 
         .SignUp-btn:hover {
-            color: #395886;
-            border: 1px solid #395886;
+            color: var(--light-blue);
+            border: 1px solid var(--secondary-blue);
 
         }
 
         .btn:hover {
 
-            background-color: #628ecb;
+            color: var(--light-blue);
+            background-color: var(--primary-blue);
         }
 
         .btn {
-            border-color: #628ecb;
+            border-color: var(--primary-blue);
             outline: none;
         }
     </style>
@@ -99,7 +107,7 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <div class="forgot-password ms-5 ps-2">
-                        <a href="forgetPass.html" style="text-decoration: none; color:#628ecb;">Forgot your password?</a>
+                        <a href="forgetPass.html" style="text-decoration: none; color:var(--primary-blue);">Forgot your password?</a>
                     </div>
                     <button class="btn w-75 py-3 mx-5 my-2" type="submit">Log In</button>
 
