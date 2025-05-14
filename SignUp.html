@@ -1,384 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up - SpendSmart</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  <link href="css/styles.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-  <div class="container">
-    <div class="row justify-content-center min-vh-100 align-items-center py-5">
-      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
-        <!-- Logo -->
-        <div class="text-center mb-4">
-          <a href="index.html" class="text-decoration-none">
-            <h1 class="fw-bold text-primary">SpendSmart</h1>
-          </a>
-        </div>
-        
-        <!-- Sign Up Card -->
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4 p-md-5">
-            <h2 class="card-title text-center text-primary fw-bold mb-2">Create an Account</h2>
-            <p class="text-center text-muted mb-4" id="step-description">Enter your details to create an account</p>
-            
-            <!-- Progress Bar -->
-            <div class="progress mb-4" style="height: 8px;">
-              <div class="progress-bar bg-primary" id="progress-bar" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            
-            <!-- Alert for errors -->
-            <div class="alert alert-danger d-none" id="error-alert" role="alert">
-              <i class="bi bi-exclamation-circle-fill me-2"></i>
-              <span id="error-message"></span>
-            </div>
-            
-            <!-- Step 1: Basic Info -->
-            <div id="step-1" class="signup-step">
-              <form id="signup-form-step1">
-                <div class="mb-3">
-                  <label for="name" class="form-label">Full Name</label>
-                  <input type="text" class="form-control" id="name" placeholder="Hala Alkafawi" required>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="signup-email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="signup-email" placeholder="name@example.com" required>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="signup-password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="signup-password" placeholder="••••••••" required>
-                  <div class="form-text">Password must be at least 8 characters long</div>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="confirm-password" class="form-label">Confirm Password</label>
-                  <input type="password" class="form-control" id="confirm-password" placeholder="••••••••" required>
-                </div>
-                
-                <div class="d-grid gap-2 mt-4">
-                  <button type="submit" class="btn btn-primary py-2">Continue</button>
-                </div>
-              </form>
-            </div>
-            
-            <!-- Step 2: User Type -->
-            <div id="step-2" class="signup-step d-none">
-              <h3 class="h5 text-center mb-4">Do you want to just browse discounts or add your own offer?</h3>
-              
-              <div class="d-grid gap-3 mb-4">
-                <div class="form-check custom-radio-card">
-                  <input class="form-check-input" type="radio" name="userType" id="browser" value="browser">
-                  <label class="form-check-label custom-radio-card-label" for="browser">
-                    <div class="p-3 border rounded">
-                      <h4 class="h6 mb-1">I want to browse discounts</h4>
-                      <p class="text-muted small mb-0">Find and use discounts shared by others</p>
-                    </div>
-                  </label>
-                </div>
-                
-                <div class="form-check custom-radio-card">
-                  <input class="form-check-input" type="radio" name="userType" id="creator" value="creator">
-                  <label class="form-check-label custom-radio-card-label" for="creator">
-                    <div class="p-3 border rounded">
-                      <h4 class="h6 mb-1">I want to add my own offer</h4>
-                      <p class="text-muted small mb-0">Share discounts and offers with the community</p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-              
-              <div class="d-flex justify-content-between mt-4">
-                <button type="button" class="btn btn-outline-primary" id="back-to-step1">Back</button>
-                <button type="button" class="btn btn-primary" id="continue-from-step2">Continue</button>
-              </div>
-            </div>
-            
-            <!-- Step 3: Offer Details -->
-            <div id="step-3" class="signup-step d-none">
-              <form id="signup-form-step3">
-                <div class="mb-3">
-                  <label class="form-label">Discount Type</label>
-                  <div class="d-grid gap-2">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="discountType" id="percentage" value="percentage" required>
-                      <label class="form-check-label" for="percentage">Percentage Discount</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="discountType" id="fixed" value="fixed">
-                      <label class="form-check-label" for="fixed">Fixed Amount Off</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="discountType" id="bogo" value="bogo">
-                      <label class="form-check-label" for="bogo">Buy One Get One</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="discountType" id="other" value="other">
-                      <label class="form-check-label" for="other">Other</label>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="offer-details" class="form-label">Offer Details</label>
-                  <textarea class="form-control" id="offer-details" rows="4" placeholder="Describe your offer in detail..." required></textarea>
-                </div>
-                
-                <div class="mb-3">
-                  <label for="documents" class="form-label">Required Documents</label>
-                  <div class="border border-2 border-dashed rounded p-3 text-center">
-                    <input type="file" class="d-none" id="documents" required>
-                    <label for="documents" class="mb-0 cursor-pointer">
-                      <i class="bi bi-cloud-arrow-up fs-3 text-primary mb-2"></i>
-                      <p class="mb-0 fw-medium text-primary">Click to upload</p>
-                      <p class="text-muted small mb-0">Upload proof of your offer (PDF, JPG, PNG)</p>
-                    </label>
-                    <p id="file-name" class="mt-2 mb-0 small d-none"></p>
-                  </div>
-                </div>
-                
-                <div class="d-flex justify-content-between mt-4">
-                  <button type="button" class="btn btn-outline-primary" id="back-to-step2">Back</button>
-                  <button type="submit" class="btn btn-primary" id="complete-signup">Complete Signup</button>
-                </div>
-              </form>
-            </div>
-            
-            <div class="text-center mt-4">
-              <p class="text-muted mb-0">Already have an account? <a href="login.html" class="text-primary fw-medium">Login</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-  <!-- Bootstrap JS Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <!-- Custom JS -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Elements
-      const step1 = document.getElementById('step-1');
-      const step2 = document.getElementById('step-2');
-      const step3 = document.getElementById('step-3');
-      const progressBar = document.getElementById('progress-bar');
-      const stepDescription = document.getElementById('step-description');
-      const errorAlert = document.getElementById('error-alert');
-      const errorMessage = document.getElementById('error-message');
-      const fileInput = document.getElementById('documents');
-      const fileName = document.getElementById('file-name');
-      
-      // Forms
-      const signupFormStep1 = document.getElementById('signup-form-step1');
-      const signupFormStep3 = document.getElementById('signup-form-step3');
-      
-      // Buttons
-      const backToStep1 = document.getElementById('back-to-step1');
-      const continueFromStep2 = document.getElementById('continue-from-step2');
-      const backToStep2 = document.getElementById('back-to-step2');
-      const completeSignup = document.getElementById('complete-signup');
-      
-      // Form data storage
-      let formData = {
-        name: '',
-        email: '',
-        password: '',
-        userType: '',
-        discountType: '',
-        offerDetails: '',
-        documents: null
-      };
-      
-      // Step 1 form submission
-      signupFormStep1.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('signup-email').value.trim();
-        const password = document.getElementById('signup-password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
-        
-        // Hide any previous errors
-        errorAlert.classList.add('d-none');
-        
-        // Validate
-        if (!name || !email || !password || !confirmPassword) {
-          showError('All fields are required');
-          return;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        if (password !== confirmPassword) {
-          showError('Passwords do not match');
-          return;
+
+        .container {
+            max-width: 100vw;
+            max-height: 100vh;
         }
-        
-        if (password.length < 8) {
-          showError('Password must be at least 8 characters long');
-          return;
+
+        .blu {
+            background: #628ecb;
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+            height: 100vh;
+            width: 100vw;
+            
         }
-        
-        // Store data
-        formData.name = name;
-        formData.email = email;
-        formData.password = password;
-        
-        // Move to step 2
-        goToStep(2);
-      });
-      
-      // Step 2 navigation
-      backToStep1.addEventListener('click', function() {
-        goToStep(1);
-      });
-      
-      continueFromStep2.addEventListener('click', function() {
-        // Get selected user type
-        const userTypeRadios = document.getElementsByName('userType');
-        let userType = '';
-        
-        for (const radio of userTypeRadios) {
-          if (radio.checked) {
-            userType = radio.value;
-            break;
-          }
+
+        .fa-wallet {
+            color: #f0f3fa;
+            font-size: 20px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
-        
-        // Hide any previous errors
-        errorAlert.classList.add('d-none');
-        
-        // Validate
-        if (!userType) {
-          showError('Please select an option');
-          return;
+
+        .LogIn-btn {
+
+            background-color: #628ecb;
+            border: 1px solid #f0f3fa;
+            color: #f0f3fa;
+            width: 100px;
+            height: 50px;
+            border-radius: 3px;
+
+
         }
-        
-        // Store data
-        formData.userType = userType;
-        
-        // If user wants to browse only, complete signup
-        if (userType === 'browser') {
-          // Simulate API call with timeout
-          completeSignup.disabled = true;
-          completeSignup.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...';
-          
-          setTimeout(function() {
-            window.location.href = 'dashboard.html';
-          }, 1500);
-        } else {
-          // Move to step 3 for offer creators
-          goToStep(3);
+
+        .LogIn-btn:hover {
+            color: #395886;
+            border: 1px solid #395886;
+
         }
-      });
-      
-      // Step 3 navigation
-      backToStep2.addEventListener('click', function() {
-        goToStep(2);
-      });
-      
-      // File input change
-      fileInput.addEventListener('change', function() {
-        if (this.files && this.files[0]) {
-          fileName.textContent = this.files[0].name;
-          fileName.classList.remove('d-none');
-          formData.documents = this.files[0];
+
+        .btn:hover {
+
+            background-color: #628ecb;
         }
-      });
-      
-      // Step 3 form submission
-      signupFormStep3.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Get form values
-        const discountTypeRadios = document.getElementsByName('discountType');
-        let discountType = '';
-        
-        for (const radio of discountTypeRadios) {
-          if (radio.checked) {
-            discountType = radio.value;
-            break;
-          }
+
+        .btn {
+            border-color: #628ecb;
+            outline: none;
         }
-        
-        const offerDetails = document.getElementById('offer-details').value.trim();
-        
-        // Hide any previous errors
-        errorAlert.classList.add('d-none');
-        
-        // Validate
-        if (!discountType) {
-          showError('Please select a discount type');
-          return;
-        }
-        
-        if (!offerDetails) {
-          showError('Please provide offer details');
-          return;
-        }
-        
-        if (!formData.documents) {
-          showError('Please upload required documents');
-          return;
-        }
-        
-        // Store data
-        formData.discountType = discountType;
-        formData.offerDetails = offerDetails;
-        
-        // Show loading state
-        completeSignup.disabled = true;
-        completeSignup.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Processing...';
-        
-        // Simulate API call with timeout
-        setTimeout(function() {
-          // In a real app, you would send formData to your backend
-          window.location.href = 'dashboard.html';
-        }, 1500);
-      });
-      
-      // Helper functions
-      function goToStep(stepNumber) {
-        // Hide all steps
-        step1.classList.add('d-none');
-        step2.classList.add('d-none');
-        step3.classList.add('d-none');
-        
-        // Show the requested step
-        if (stepNumber === 1) {
-          step1.classList.remove('d-none');
-          progressBar.style.width = '33%';
-          progressBar.setAttribute('aria-valuenow', '33');
-          stepDescription.textContent = 'Enter your details to create an account';
-        } else if (stepNumber === 2) {
-          step2.classList.remove('d-none');
-          progressBar.style.width = '66%';
-          progressBar.setAttribute('aria-valuenow', '66');
-          stepDescription.textContent = 'What would you like to do?';
-        } else if (stepNumber === 3) {
-          step3.classList.remove('d-none');
-          progressBar.style.width = '100%';
-          progressBar.setAttribute('aria-valuenow', '100');
-          stepDescription.textContent = 'Tell us about your offer';
-        }
-        
-        // Scroll to top of form
-        window.scrollTo(0, 0);
-      }
-      
-      function showError(message) {
-        errorMessage.textContent = message;
-        errorAlert.classList.remove('d-none');
-      }
-    });
-  </script>
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div
+                class="col blu m-0 px-2 d-flex flex-column justify-content-center align-items-center position-relative">
+
+               <a href="hero.html"><i class="fa-solid fa-wallet"> Spend Smart </i></a> 
+                <h4 style="color: #f0f3fa; text-align: center;" class="mx-3">Already Signed up?</h4><br>
+                <p style="color: #f0f3fa; text-align: center;" class="mx-3">Log in to your account so you can access personalized
+                    discounts and <br>savings
+                    tips</p><br>
+                <p><a href="LogIn.html"><button class="LogIn-btn"> LOG IN </button></a></p>
+            </div>
+
+            <div class="col mt-5 me-5" style="font-family: sans-serif;">
+                <form>
+                    <div>
+                        <h3 class="h3 mb-2 mt-5 fw-normal text-center">Sign Up for an Account</h3>
+                        <p class="mb-3 text-body-secondary text-center">Join our community and start your savings
+                            <br>journey!
+                        </p>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="First name" aria-label="First name"
+                                style="height: 50px;">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Last name" aria-label="Last name"
+                                style="height: 50px;">
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                        <label for="floatingInput">Email address</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                        <label for="floatingPassword">Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="floatingPassword"
+                            placeholder="Confirm Password">
+                        <label for="floatingPassword">Confirm Password</label>
+                    </div>
+
+                    <div class="form-check text-start my-3">
+                        <input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Remember me
+                        </label>
+                    </div>
+                    <button class="btn w-100 py-3" type="submit">Sign in</button>
+                   
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
