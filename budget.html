@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpendSmart - Budget Analysis Assistant</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-     <link rel="icon" href="Media/budg.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="Media/budg.png">
     <style>
         :root {
             --primary-color: #1a73e8;
@@ -17,14 +22,20 @@
             --user-message-bg: #e8f5e9;
             --error-color: #f44336;
             --success-color: #4caf50;
+            --primary-blue: #0056b3;
+            --secondary-blue: #007bff;
+            --light-blue: #e6f2ff;
+            --dark-blue: #004085;
+            --accent-blue: #00a0e9;
+
         }
-        
+
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f8fafc;
             height: 100vh;
         }
-        
+
         .chatbot-container {
             max-width: 800px;
             height: 600px;
@@ -34,7 +45,7 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .chat-header {
             background-color: var(--primary-color);
             color: white;
@@ -42,20 +53,20 @@
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
         }
-        
+
         .chat-messages {
             flex: 1;
             overflow-y: auto;
             padding: 1rem;
             scroll-behavior: smooth;
         }
-        
+
         .chat-input {
             padding: 1rem;
             border-top: 1px solid #e5e7eb;
             display: flex;
         }
-        
+
         .message {
             max-width: 80%;
             margin-bottom: 1rem;
@@ -64,14 +75,14 @@
             position: relative;
             line-height: 1.5;
         }
-        
+
         .bot-message {
             background-color: var(--bot-message-bg);
             border-bottom-left-radius: 0.25rem;
             align-self: flex-start;
             margin-right: auto;
         }
-        
+
         .user-message {
             background-color: var(--user-message-bg);
             border-bottom-right-radius: 0.25rem;
@@ -79,7 +90,7 @@
             margin-left: auto;
             text-align: right;
         }
-        
+
         .typing-indicator {
             display: inline-block;
             padding: 0.75rem 1rem;
@@ -88,7 +99,7 @@
             border-bottom-left-radius: 0.25rem;
             margin-bottom: 1rem;
         }
-        
+
         .typing-indicator span {
             height: 0.5rem;
             width: 0.5rem;
@@ -99,41 +110,41 @@
             border-radius: 50%;
             opacity: 0.4;
         }
-        
+
         .typing-indicator span:nth-of-type(1) {
             animation: 1s blink infinite 0.3333s;
         }
-        
+
         .typing-indicator span:nth-of-type(2) {
             animation: 1s blink infinite 0.6666s;
         }
-        
+
         .typing-indicator span:nth-of-type(3) {
             animation: 1s blink infinite 0.9999s;
         }
-        
+
         @keyframes blink {
             50% {
                 opacity: 1;
             }
         }
-        
+
         .input-error {
             border-color: var(--error-color) !important;
         }
-        
+
         .error-message {
             color: var(--error-color);
             font-size: 0.75rem;
             margin-top: 0.25rem;
         }
-        
+
         .language-switcher {
             display: flex;
             justify-content: flex-end;
             padding: 0.5rem;
         }
-        
+
         .language-switcher button {
             background-color: transparent;
             border: 1px solid #ddd;
@@ -143,13 +154,13 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        
+
         .language-switcher button.active {
             background-color: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
         }
-        
+
         .analysis-results {
             background-color: white;
             border-radius: 10px;
@@ -157,14 +168,14 @@
             padding: 1rem;
             margin: 1rem 0;
         }
-        
+
         .analysis-stats {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             margin: 1rem 0;
         }
-        
+
         .stat {
             width: calc(33.33% - 0.5rem);
             background-color: #f8f9fa;
@@ -173,27 +184,27 @@
             margin-bottom: 0.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-        
+
         .stat-label {
             color: #6c757d;
             font-size: 0.875rem;
             display: block;
             margin-bottom: 0.25rem;
         }
-        
+
         .stat-value {
             font-size: 1.25rem;
             font-weight: 600;
         }
-        
+
         .positive {
             color: var(--success-color);
         }
-        
+
         .negative {
             color: var(--error-color);
         }
-        
+
         .savings-advice {
             background-color: #f9fbe7;
             border-left: 4px solid #cddc39;
@@ -201,12 +212,12 @@
             margin: 1rem 0;
             border-radius: 4px;
         }
-        
+
         .expense-chart-container {
             height: 250px;
             margin: 1rem 0;
         }
-        
+
         .category-advice {
             background-color: #e8f5e9;
             border-radius: 8px;
@@ -214,12 +225,12 @@
             margin: 0.5rem 0;
             border-left: 4px solid #4caf50;
         }
-        
+
         .category-advice h4 {
             margin-top: 0;
             color: #2e7d32;
         }
-        
+
         .goal-guidance {
             background-color: #e3f2fd;
             border-radius: 8px;
@@ -227,7 +238,7 @@
             margin-top: 1rem;
             border-left: 4px solid #1976d2;
         }
-        
+
         .recommendation-card {
             background-color: #f5f5f5;
             border-radius: 8px;
@@ -235,23 +246,23 @@
             margin: 1rem 0;
             border: 1px solid #e0e0e0;
         }
-        
+
         .recommendation-card h4 {
             color: var(--primary-dark);
             margin-top: 0;
         }
-        
+
         @media (max-width: 640px) {
             .chatbot-container {
                 height: 100vh;
                 max-width: 100%;
                 border-radius: 0;
             }
-            
+
             .chat-header {
                 border-radius: 0;
             }
-            
+
             .stat {
                 width: 100%;
             }
@@ -265,7 +276,7 @@
             margin-right: 0;
             text-align: right;
         }
-        
+
         [dir="rtl"] .user-message {
             border-bottom-right-radius: 1rem;
             border-bottom-left-radius: 0.25rem;
@@ -286,10 +297,181 @@
             transform: translate(-50%, 0);
             z-index: 10;
         }
+
+        /* Navigation */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+            color: var(--primary-blue);
+        }
+
+        /* .navbar-brand:hover i {
+            transform: rotate(15deg);
+            transition: transform 0.3s ease;
+        } */
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            margin: 0 10px;
+            position: relative;
+        }
+
+        .nav-link:after {
+            /* content: '' means empty  */
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--secondary-blue);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-blue);
+            border-color: var(--dark-blue);
+        }
+
+        .chatbot-container {
+            position: absolute;
+            top: 100px;
+            /* أعلى من 100px قليلاً حتى لا يتداخل مع النافبار */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            /* التحكم في عرض البوت */
+            height: 600px;
+            /* التحكم في ارتفاع البوت */
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .chatbot-container {
+                top: 80px;
+                /* adjust for mobile */
+                width: 90%;
+                /* smaller width on mobile */
+            }
+        }
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+            }
+
+            .btn-outline-primary,
+            .btn-primary {
+                font-size: 0.9rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+            }
+
+            .btn-outline-primary,
+            .btn-primary {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 
-<body class="flex items-center justify-center p-4">
+<body>
+  <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <!-- Icon bring from fontawesome -->
+            <a class="navbar-brand" href="index.html"> <i class="fas fa-wallet"></i> SpendSmart </a>
+            <!--data-bs-toggle="collapse" mean that when the button is clicked the navbar will collapse  -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                          Budgeting</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="budget.html">Chatboot Analysis</a></li>
+                            <li><a class="dropdown-item" href="AddOffers.html">Financial Chart</a></li>                     
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Discount.html">Discounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Tips.html">Tips</a>
+                    </li>
+
+                </ul>
+                <div class="ms-lg-4 mt-3 mt-lg-0">
+                    <a href="logIn.html" class="btn btn-outline-primary me-2">Log In</a>
+                    <a href="SignUp.html" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Chatbot Container -->
     <div class="chatbot-container w-full">
         <div class="chat-header flex justify-between items-center">
             <div>
@@ -301,17 +483,22 @@
                 <button id="ar-btn">العربية</button>
             </div>
         </div>
-        
+
         <div class="chat-messages flex flex-col" id="chat-messages"></div>
-        
+
         <div class="chat-input">
-            <input type="text" id="user-input" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type your answer here...">
-            <button id="send-btn" class="ml-2 bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 focus:outline-none">
+            <input type="text" id="user-input"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Type your answer here...">
+            <button id="send-btn"
+                class="ml-2 bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 focus:outline-none">
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>
     </div>
-    
+
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
     <script>
         // Global variables
@@ -468,34 +655,34 @@
         const headerSubtitle = document.getElementById('header-subtitle');
 
         // Initialize the chat
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Set language from localStorage or default to English
             currentLanguage = localStorage.getItem('preferredLanguage') || 'en';
             updateLanguageUI();
-            
+
             // Start the conversation
             setTimeout(() => {
                 askQuestion();
             }, 500);
-            
+
             // Event listeners
             sendBtn.addEventListener('click', handleUserInput);
-            userInput.addEventListener('keypress', function(e) {
+            userInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     handleUserInput();
                 }
             });
-            
-            engBtn.addEventListener('click', function() {
+
+            engBtn.addEventListener('click', function () {
                 setLanguage('en');
             });
-            
-            arBtn.addEventListener('click', function() {
+
+            arBtn.addEventListener('click', function () {
                 setLanguage('ar');
             });
-            
+
             // Add input validation for numerical fields
-            userInput.addEventListener('input', function() {
+            userInput.addEventListener('input', function () {
                 const currentQ = questions[currentQuestion];
                 if (currentQ && currentQ.validation === 'number') {
                     validateNumberInput(userInput);
@@ -507,27 +694,27 @@
         function validateNumberInput(inputElement) {
             const value = inputElement.value;
             const numberPattern = /^[0-9]*\.?[0-9]*$/;
-            
+
             // Remove error styling first
             inputElement.classList.remove('input-error');
             const errorElement = document.querySelector('.error-message');
             if (errorElement) {
                 errorElement.remove();
             }
-            
+
             // Check if input matches number pattern
             if (value !== '' && !numberPattern.test(value)) {
                 inputElement.classList.add('input-error');
-                
+
                 // Add error message
                 const errorMsg = document.createElement('div');
                 errorMsg.className = 'error-message';
                 errorMsg.textContent = questions[currentQuestion].errorMsg[currentLanguage];
                 inputElement.parentNode.appendChild(errorMsg);
-                
+
                 return false;
             }
-            
+
             return true;
         }
 
@@ -563,12 +750,12 @@
             if (currentQuestion < questions.length) {
                 isWaitingForAnswer = true;
                 showTyping();
-                
+
                 setTimeout(() => {
                     hideTyping();
                     const questionText = questions[currentQuestion][currentLanguage];
                     addMessage(questionText);
-                    
+
                     if (currentQuestion === questions.length - 1) {
                         // Last question - show the analysis after a delay
                         isWaitingForAnswer = false;
@@ -586,10 +773,10 @@
         // Function to handle user input
         function handleUserInput() {
             if (!isWaitingForAnswer) return;
-            
+
             const userAnswer = userInput.value.trim();
             if (!userAnswer) return;
-            
+
             // Validate input if needed
             const currentQ = questions[currentQuestion];
             if (currentQ.validation === 'number') {
@@ -597,13 +784,13 @@
                     return;
                 }
             }
-            
+
             // Add user message to chat
             addMessage(userAnswer, true);
-            
+
             // Process the answer
             processAnswer(userAnswer);
-            
+
             // Clear input
             userInput.value = '';
         }
@@ -611,7 +798,7 @@
         // Function to process user answers
         function processAnswer(answer) {
             isWaitingForAnswer = false;
-            
+
             // Store the answer based on current question
             if (currentQuestion === 0) {
                 userResponses.name = answer;
@@ -623,7 +810,7 @@
                 const category = questions[currentQuestion].category;
                 userResponses.expenses[category] = parseFloat(answer);
             }
-            
+
             // Move to next question
             currentQuestion++;
             setTimeout(() => {
@@ -641,13 +828,13 @@
         // Function to update UI based on language
         function updateLanguageUI() {
             document.body.setAttribute('dir', currentLanguage === 'ar' ? 'rtl' : 'ltr');
-            
+
             // Update header text
             headerSubtitle.textContent = currentLanguage === 'ar' ? 'مساعد تحليل الميزانية' : 'Budget Analysis Assistant';
-            
+
             // Update input placeholder
             userInput.placeholder = currentLanguage === 'ar' ? 'اكتب إجابتك هنا...' : 'Type your answer here...';
-            
+
             // Update language buttons
             engBtn.classList.toggle('active', currentLanguage === 'en');
             arBtn.classList.toggle('active', currentLanguage === 'ar');
@@ -660,17 +847,17 @@
             for (const category in userResponses.expenses) {
                 totalExpenses += userResponses.expenses[category] || 0;
             }
-            
+
             // Calculate remaining money
             const remainingMoney = userResponses.totalIncome - totalExpenses;
-            
+
             // Calculate savings shortfall/surplus
             const savingsComparison = remainingMoney - userResponses.savingsGoal;
-            
+
             // Generate overall advice
             let overallAdvice = '';
             if (savingsComparison >= 0) {
-                overallAdvice = currentLanguage === 'ar' 
+                overallAdvice = currentLanguage === 'ar'
                     ? `مبروك! أنت توفر ${remainingMoney.toFixed(2)} دينار أردني شهريًا، وهذا يتجاوز هدفك البالغ ${userResponses.savingsGoal.toFixed(2)} دينار أردني بمقدار ${savingsComparison.toFixed(2)} دينار أردني. استمر في العمل الجيد!`
                     : `Congratulations! You're saving ${remainingMoney.toFixed(2)} JOD monthly, which exceeds your goal of ${userResponses.savingsGoal.toFixed(2)} JOD by ${savingsComparison.toFixed(2)} JOD. Keep up the good work!`;
             } else {
@@ -678,7 +865,7 @@
                     ? `أنت تحتاج إلى تعديل ميزانيتك للوصول إلى هدف التوفير البالغ ${userResponses.savingsGoal.toFixed(2)} دينار أردني. حاليًا، أنت بحاجة إلى توفير ${Math.abs(savingsComparison).toFixed(2)} دينار أردني إضافي شهريًا.`
                     : `You need to adjust your budget to reach your savings goal of ${userResponses.savingsGoal.toFixed(2)} JOD. Currently, you need to save an additional ${Math.abs(savingsComparison).toFixed(2)} JOD monthly.`;
             }
-            
+
             // Analyze spending by category compared to recommended percentages
             const spendingAnalysis = [];
             for (const category in userResponses.expenses) {
@@ -687,7 +874,7 @@
                 const recommendedPercentage = recommendedPercentages[category];
                 const recommendedAmount = (recommendedPercentage / 100) * userResponses.totalIncome;
                 const difference = actualAmount - recommendedAmount;
-                
+
                 spendingAnalysis.push({
                     category,
                     actualAmount,
@@ -697,14 +884,14 @@
                     difference
                 });
             }
-            
+
             // Sort by highest overspending
             spendingAnalysis.sort((a, b) => b.difference - a.difference);
-            
+
             // Create category-specific advice for top 3 problem areas
             const categoryAdvice = [];
             let totalPotentialSavings = 0;
-            
+
             const problemCategories = spendingAnalysis.filter(item => item.difference > 0).slice(0, 3);
             problemCategories.forEach(item => {
                 const advice = {
@@ -712,9 +899,9 @@
                     advice: '',
                     savings: item.difference
                 };
-                
+
                 totalPotentialSavings += item.difference;
-                
+
                 if (currentLanguage === 'ar') {
                     const categoryTranslations = {
                         housing: 'السكن',
@@ -727,18 +914,18 @@
                         debt: 'الديون',
                         other: 'نفقات أخرى'
                     };
-                    
+
                     advice.advice = `أنت تنفق ${item.actualAmount.toFixed(2)} دينار أردني (${item.actualPercentage.toFixed(1)}% من دخلك) على ${categoryTranslations[item.category]}. الإنفاق الموصى به هو ${item.recommendedAmount.toFixed(2)} دينار أردني (${item.recommendedPercentage}%). يمكنك توفير ${item.difference.toFixed(2)} دينار أردني شهريًا بتخفيض هذه الفئة.`;
                 } else {
                     advice.advice = `You're spending ${item.actualAmount.toFixed(2)} JOD (${item.actualPercentage.toFixed(1)}% of your income) on ${item.category}. Recommended spending is ${item.recommendedAmount.toFixed(2)} JOD (${item.recommendedPercentage}%). You could save ${item.difference.toFixed(2)} JOD monthly by reducing this category.`;
                 }
-                
+
                 categoryAdvice.push(advice);
             });
-            
+
             // Goal-oriented guidance
             let goalGuidance = '';
-            
+
             if (savingsComparison < 0) {
                 if (totalPotentialSavings >= Math.abs(savingsComparison)) {
                     goalGuidance = currentLanguage === 'ar'
@@ -754,15 +941,15 @@
                     ? `أنت بالفعل تحقق هدف التوفير الخاص بك! يمكنك الاستمرار في توفير ${savingsComparison.toFixed(2)} دينار أردني إضافي شهريًا أو استخدامه للاستثمار أو سداد الديون.`
                     : `You are already meeting your savings goal! You can continue saving the extra ${savingsComparison.toFixed(2)} JOD monthly or use it for investments or debt repayment.`;
             }
-            
+
             // Specific actionable tips
             const actionableTips = getActionableTips(spendingAnalysis);
-            
+
             // Create analysis HTML
             showTyping();
             setTimeout(() => {
                 hideTyping();
-                
+
                 // Generate the analysis results HTML
                 const resultsHTML = `
                     <div class="analysis-results">
@@ -813,20 +1000,20 @@
                         </div>
                     </div>
                 `;
-                
+
                 addMessage(resultsHTML);
-                
+
                 // Create chart
                 setTimeout(() => {
                     createExpensesChart();
                 }, 100);
-                
+
                 // Add restart option
                 setTimeout(() => {
-                    const restartMsg = currentLanguage === 'ar' 
-                        ? 'هل تريد إعادة تحليل ميزانيتك مع أرقام مختلفة؟ اكتب "إعادة" أو قم بتحديث الصفحة.' 
+                    const restartMsg = currentLanguage === 'ar'
+                        ? 'هل تريد إعادة تحليل ميزانيتك مع أرقام مختلفة؟ اكتب "إعادة" أو قم بتحديث الصفحة.'
                         : 'Would you like to analyze your budget again with different numbers? Type "restart" or refresh the page.';
-                    
+
                     addMessage(restartMsg);
                     isWaitingForAnswer = true;
                     userInput.addEventListener('keypress', function restartHandler(e) {
@@ -877,10 +1064,10 @@
         function getActionableTips(analysis) {
             const tips = [];
             const highestCategories = analysis.filter(item => item.difference > 0).slice(0, 3);
-            
+
             highestCategories.forEach(item => {
                 if (currentLanguage === 'ar') {
-                    switch(item.category) {
+                    switch (item.category) {
                         case 'housing':
                             tips.push(`السكن: فكر في مشاركة السكن مع آخرين أو البحث عن شقة أقل تكلفة. يمكنك توفير حوالي ${(item.difference * 0.7).toFixed(2)} دينار أردني شهريًا.`);
                             break;
@@ -900,7 +1087,7 @@
                             tips.push(`${getCategoryNameArabic(item.category)}: قلل الإنفاق بنسبة ${Math.min(50, Math.round((item.difference / item.actualAmount) * 100))}% للوصول إلى الميزانية الموصى بها وهي ${item.recommendedAmount.toFixed(2)} دينار أردني شهريًا.`);
                     }
                 } else {
-                    switch(item.category) {
+                    switch (item.category) {
                         case 'housing':
                             tips.push(`Housing: Consider getting a roommate or looking for a less expensive apartment. You could save approximately ${(item.difference * 0.7).toFixed(2)} JOD monthly.`);
                             break;
@@ -921,7 +1108,7 @@
                     }
                 }
             });
-            
+
             // Add general tips
             if (currentLanguage === 'ar') {
                 tips.push(`تتبع نفقاتك اليومية لمدة شهر كامل لتحديد مجالات التوفير الإضافية.`);
@@ -930,23 +1117,23 @@
                 tips.push(`Track your daily expenses for a full month to identify additional savings areas.`);
                 tips.push(`Designate one "no-spend day" per week where you avoid any non-essential purchases.`);
             }
-            
+
             return tips;
         }
 
         // Function to create expenses chart
         function createExpensesChart() {
             const ctx = document.getElementById('expenseChart').getContext('2d');
-            
+
             // Prepare data
             const categories = Object.keys(userResponses.expenses);
             const values = Object.values(userResponses.expenses);
-            
+
             // Translate categories if needed
             const translatedCategories = categories.map(category => {
                 return currentLanguage === 'ar' ? getCategoryNameArabic(category) : getCategoryNameEnglish(category);
             });
-            
+
             // Create chart
             new Chart(ctx, {
                 type: 'bar',
@@ -985,17 +1172,17 @@
                     plugins: {
                         tooltip: {
                             callbacks: {
-                                label: function(context) {
+                                label: function (context) {
                                     let label = context.dataset.label || '';
                                     if (label) {
                                         label += ': ';
                                     }
                                     label += parseFloat(context.raw).toFixed(2) + ' JOD';
-                                    
+
                                     // Add percentage of income
                                     const percentage = (context.raw / userResponses.totalIncome * 100).toFixed(1);
                                     label += ` (${percentage}% of income)`;
-                                    
+
                                     return label;
                                 }
                             }
@@ -1006,4 +1193,5 @@
         }
     </script>
 </body>
+
 </html>
